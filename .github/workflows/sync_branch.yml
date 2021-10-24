@@ -1,4 +1,4 @@
-name: Auto operation After deploy
+name: 브랜치 싱크
 
 on:  
   workflow_dispatch
