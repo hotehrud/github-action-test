@@ -20,6 +20,7 @@ function App() {
         </a>
         <ul>
           <li>Fix: 1</li>
+          <li>Fix: 2</li>
         </ul>
       </header>
     </div>
