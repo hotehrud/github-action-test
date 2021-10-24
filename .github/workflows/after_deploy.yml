@@ -1,16 +1,28 @@
 name: Auto operation After deploy
 
-on:
-  pull_request:
-    branches:
-      - main
-    types: [ closed ]
+on:  
+  workflow_dispatch
 
 jobs:
   tagging_merge_job:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
+      - name: Merge ${{ github.ref }} to main
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          from_branch: ${{ github.ref }}
+          target_branch: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Merge main -> dev
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          from_branch: main
+          target_branch: dev
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+   
       - uses: actions/checkout@v2
       - name: Bump version and push tag
         id: tag_version
@@ -24,11 +36,3 @@ jobs:
           tag: ${{ steps.tag_version.outputs.new_tag }}
           name: Release ${{ steps.tag_version.outputs.new_tag }}
           body: ${{ steps.tag_version.outputs.changelog }}
-          
-      - name: Sync dev with master
-        uses: tretuna/sync-branches@1.4.0
-        with:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          FROM_BRANCH: "main"
-          TO_BRANCH: "dev"
-   
