@@ -18,6 +18,11 @@ jobs:
         with:
           node-version: '14.x'
 
+      # 캐시 디렉토리 가져옴
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
       # 노드 모듈 캐시
       - name: Cache yarn
         uses: actions/cache@v2
@@ -30,7 +35,7 @@ jobs:
 
       # 모듈 설치
       - name: Install Dependencies
-        if: steps.node-cache.outputs.cache-hit != 'true'
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn
 
       # 빌드
