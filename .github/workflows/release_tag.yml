@@ -1,15 +1,15 @@
-name: CI
+name: Release tag
 
 on:
-  pull_request:
-    branches:
-      - main
-    types: [ closed ]
+  workflow_run:
+    workflows: ["Sync branch"]
+    branches: [main]
+    types:
+      - completed
   workflow_dispatch:
   
 jobs:
   tagging_job:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
