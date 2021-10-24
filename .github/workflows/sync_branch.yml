@@ -1,4 +1,4 @@
-name: 브랜치 싱크
+name: Sync branch
 
 on:  
   workflow_dispatch
@@ -8,15 +8,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Sync ${{ github.ref }} to main
-        uses: tretuna/sync-branches@1.4.0
+        uses: devmasx/merge-branch@master
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          FROM_BRANCH: ${{ github.ref }}
-          TO_BRANCH: "main"
+          type: now
+          from_branch: ${{ github.ref }}
+          target_branch: main  
           
       - name: Sync dev with master
-        uses: tretuna/sync-branches@1.4.0
+        uses: devmasx/merge-branch@master
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          FROM_BRANCH: "main"
-          TO_BRANCH: "dev"
+          type: now
+          from_branch: main
+          target_branch: dev
