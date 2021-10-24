@@ -27,6 +27,7 @@ function App() {
           <li>Feat: 3</li>
           <li>Feat: 4</li>
           <li>Fix: 4</li>
+          <li>Fix: 5</li>
         </ul>
       </header>
     </div>
