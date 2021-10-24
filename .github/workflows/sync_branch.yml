@@ -1,4 +1,4 @@
-name: 브랜치 싱크
+name: Sync branch
 
 on:  
   workflow_dispatch
