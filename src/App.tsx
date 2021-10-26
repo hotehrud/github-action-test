@@ -32,6 +32,7 @@ function App() {
           <li>Fix: 7</li>
           <li>Fix: 8</li>
           <li>Fix: 9</li>
+          <li>Fix: 10</li>
         </ul>
       </header>
     </div>
