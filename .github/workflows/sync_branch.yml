@@ -1,7 +1,11 @@
 name: Sync branch
 
 on:  
-  workflow_dispatch
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["S3 배포"]
+    branches: [main]
+    types: [completed]
 
 jobs:
   sync_job:
