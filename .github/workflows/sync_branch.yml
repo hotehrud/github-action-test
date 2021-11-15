@@ -7,25 +7,25 @@ jobs:
   sync_job:
     runs-on: ubuntu-latest
     steps:
-      - name: Sync ${{ github.ref }} to master
+      - name: Sync ${{ github.ref }} to main
         uses: devmasx/merge-branch@master
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           type: now
           from_branch: ${{ github.ref }}
-          target_branch: master  
+          target_branch: main  
           
-      - name: Sync dev with master
+      - name: Sync dev with main
         uses: devmasx/merge-branch@master
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           type: now
-          from_branch: master
+          from_branch: main
           target_branch: dev
 
       - uses: actions/checkout@master
         with:
-          ref: master
+          ref: main
       - name: Bump version and push tag
         id: tag_version
         uses: mathieudutour/github-tag-action@v5.6
