@@ -2,27 +2,40 @@ name: Sync branch
 
 on:  
   workflow_dispatch:
-  workflow_run:
-    workflows: ["S3 배포"]
-    branches: [main]
-    types: [completed]
 
 jobs:
   sync_job:
     runs-on: ubuntu-latest
     steps:
-      - name: Sync ${{ github.ref }} to main
+      - name: Sync ${{ github.ref }} to master
         uses: devmasx/merge-branch@master
         with:
-          GITHUB_TOKEN: ${{secrets.PERSONAL_ACCESS_TOKEN}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           type: now
           from_branch: ${{ github.ref }}
-          target_branch: main  
+          target_branch: master  
           
-      - name: Sync dev with main
+      - name: Sync dev with master
         uses: devmasx/merge-branch@master
         with:
-          GITHUB_TOKEN: ${{secrets.PERSONAL_ACCESS_TOKEN}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           type: now
-          from_branch: main
+          from_branch: master
           target_branch: dev
+
+      - uses: actions/checkout@master
+        with:
+          ref: master
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v5.6
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_branches: release
+
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
